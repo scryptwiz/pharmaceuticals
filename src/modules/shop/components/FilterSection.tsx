@@ -8,6 +8,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import Chip from "../../../shared/components/Chip";
 import { Colors } from "../../../shared/design-system/theme";
 import { FetchProductsParams } from "../api/useProducts";
 
@@ -94,20 +95,12 @@ export default function FilterSection({
           {CATEGORIES.map((cat) => {
             const isSelected = activeCategory === cat;
             return (
-              <Pressable
+              <Chip
                 key={cat}
-                style={[styles.chip, isSelected && styles.chipSelected]}
+                label={cat}
+                selected={isSelected}
                 onPress={() => handleCategorySelect(cat)}
-              >
-                <Text
-                  style={[
-                    styles.chipText,
-                    isSelected && styles.chipTextSelected,
-                  ]}
-                >
-                  {cat}
-                </Text>
-              </Pressable>
+              />
             );
           })}
         </ScrollView>
@@ -160,8 +153,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 12,
     paddingHorizontal: 12,
-    borderWidth: 1,
-    borderColor: Colors.border,
   },
   searchIcon: {
     marginRight: 8,
@@ -188,27 +179,6 @@ const styles = StyleSheet.create({
   },
   categoryScroll: {
     paddingHorizontal: 16,
-  },
-  chip: {
-    backgroundColor: Colors.surface,
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 20,
-    marginRight: 8,
-    borderWidth: 1,
-    borderColor: Colors.border,
-  },
-  chipSelected: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
-  },
-  chipText: {
-    fontSize: 13,
-    color: Colors.text,
-  },
-  chipTextSelected: {
-    color: Colors.textLight,
-    fontWeight: "600",
   },
   sortScroll: {
     paddingHorizontal: 16,

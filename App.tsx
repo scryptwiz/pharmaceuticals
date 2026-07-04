@@ -10,12 +10,14 @@ import { Colors } from "./src/shared/design-system/theme";
 import { persister, queryClient } from "./src/shared/lib/query-client";
 
 import ConsultationsScreen from "./src/modules/consultations/screens/ConsultationsScreen";
+import DoctorDetailScreen from "./src/modules/consultations/screens/DoctorDetailScreen";
 import HealthRecordsScreen from "./src/modules/health-records/screens/HealthRecordsScreen";
 import CartScreen from "./src/modules/shop/screens/CartScreen";
 import ShopScreen from "./src/modules/shop/screens/ShopScreen";
 
 const Tab = createBottomTabNavigator();
 const ShopStack = createNativeStackNavigator();
+const ConsultationsStack = createNativeStackNavigator();
 
 function ShopStackNavigator() {
   return (
@@ -23,6 +25,21 @@ function ShopStackNavigator() {
       <ShopStack.Screen name="ShopMain" component={ShopScreen} />
       <ShopStack.Screen name="Cart" component={CartScreen} />
     </ShopStack.Navigator>
+  );
+}
+
+function ConsultationsStackNavigator() {
+  return (
+    <ConsultationsStack.Navigator screenOptions={{ headerShown: false }}>
+      <ConsultationsStack.Screen
+        name="ConsultationsMain"
+        component={ConsultationsScreen}
+      />
+      <ConsultationsStack.Screen
+        name="DoctorDetail"
+        component={DoctorDetailScreen}
+      />
+    </ConsultationsStack.Navigator>
   );
 }
 
@@ -41,7 +58,7 @@ export default function App() {
 
                 if (route.name === "ShopTab") {
                   iconName = "cart";
-                } else if (route.name === "Consultations") {
+                } else if (route.name === "ConsultationsTab") {
                   iconName = "medical";
                 } else {
                   iconName = "document-text";
@@ -60,14 +77,9 @@ export default function App() {
               options={{ title: "Shop" }}
             />
             <Tab.Screen
-              name="Consultations"
-              component={ConsultationsScreen}
-              options={{
-                headerShown: true,
-                headerStyle: { backgroundColor: Colors.primary },
-                headerTintColor: Colors.textLight,
-                headerTitleStyle: { fontWeight: "bold" },
-              }}
+              name="ConsultationsTab"
+              component={ConsultationsStackNavigator}
+              options={{ title: "Consultations" }}
             />
             <Tab.Screen
               name="Health Records"
