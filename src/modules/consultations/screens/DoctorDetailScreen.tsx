@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import NetInfo from "@react-native-community/netinfo";
 import React, { useState } from "react";
 import {
   Alert,
@@ -11,6 +12,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { mockDb } from "../../../mocks/mock-db";
 import { Colors } from "../../../shared/design-system/theme";
+import { useSyncStore } from "../../../shared/store/useSyncStore";
+import { useToastStore } from "../../../shared/store/useToastStore";
 import SlotSelector from "../components/SlotSelector";
 import { useConsultationStore } from "../store/useConsultationStore";
 import { checkSlotConflict } from "../utils/bookingUtils";
@@ -64,17 +67,34 @@ export default function DoctorDetailScreen({ route, navigation }: any) {
       return;
     }
 
-    bookAppointment({
-      ...newBooking,
-      docName: doctor.name,
-      patientName: "Kelvin Ajayi",
-    });
+    NetInfo.fetch().then((state) => {
+      const isConnected = state.isConnected ?? false;
 
-    Alert.alert(
-      "Success",
-      `Consultation booked with ${doctor.name} on ${selectedDate} at ${selectedSlot}.`,
-      [{ text: "OK", onPress: () => navigation.goBack() }],
-    );
+      if (!isConnected) {
+        const { queueBooking } = useSyncStore.getState();
+        const { showToast } = useToastStore.getState();
+
+        queueBooking({
+          ...newBooking,
+          docName: doctor.name,
+          patientName: "Kelvin Ajayi",
+        });
+
+        showToast("Offline: Booking queued, will sync on reconnect", "success");
+        navigation.goBack();
+        return;
+      }
+
+      bookAppointment({
+        ...newBooking,
+        docName: doctor.name,
+        patientName: "Kelvin Ajayi",
+      });
+
+      const { showToast } = useToastStore.getState();
+      showToast(`Booking Confirmed with ${doctor.name}`, "success");
+      navigation.goBack();
+    });
   };
 
   return (

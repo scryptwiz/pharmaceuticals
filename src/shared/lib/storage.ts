@@ -1,8 +1,38 @@
-import { createMMKV } from "react-native-mmkv";
+let mmkvInstance: any;
 
-export const storage = createMMKV({
-  id: "pharmaceuticals-app-storage",
-});
+if (process.env.NODE_ENV === "test") {
+  class MockMMKV {
+    store = new Map<string, any>();
+    set(key: string, value: any) {
+      this.store.set(key, String(value));
+    }
+    getString(key: string) {
+      return this.store.get(key) || undefined;
+    }
+    getNumber(key: string) {
+      const val = this.store.get(key);
+      return val ? Number(val) : undefined;
+    }
+    getBoolean(key: string) {
+      const val = this.store.get(key);
+      return val ? val === "true" : undefined;
+    }
+    remove(key: string) {
+      this.store.delete(key);
+    }
+    clearAll() {
+      this.store.clear();
+    }
+  }
+  mmkvInstance = new MockMMKV();
+} else {
+  const { createMMKV } = require("react-native-mmkv");
+  mmkvInstance = createMMKV({
+    id: "pharmaceuticals-app-storage",
+  });
+}
+
+export const storage = mmkvInstance;
 
 export const StorageHelpers = {
   setString: (key: string, value: string) => storage.set(key, value),
