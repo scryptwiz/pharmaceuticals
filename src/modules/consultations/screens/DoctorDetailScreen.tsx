@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { mockDb } from "../../../mocks/mock-db";
 import { Colors } from "../../../shared/design-system/theme";
+import { Analytics } from "../../../shared/lib/analytics";
 import { useSyncStore } from "../../../shared/store/useSyncStore";
 import { useToastStore } from "../../../shared/store/useToastStore";
 import SlotSelector from "../components/SlotSelector";
@@ -80,6 +81,13 @@ export default function DoctorDetailScreen({ route, navigation }: any) {
           patientName: "Kelvin Ajayi",
         });
 
+        Analytics.track("doctor_booking_queued", {
+          docId: doctor.id,
+          docName: doctor.name,
+          date: selectedDate,
+          slot: selectedSlot,
+        });
+
         showToast("Offline: Booking queued, will sync on reconnect", "success");
         navigation.goBack();
         return;
@@ -89,6 +97,13 @@ export default function DoctorDetailScreen({ route, navigation }: any) {
         ...newBooking,
         docName: doctor.name,
         patientName: "Kelvin Ajayi",
+      });
+
+      Analytics.track("doctor_booking_confirmed", {
+        docId: doctor.id,
+        docName: doctor.name,
+        date: selectedDate,
+        slot: selectedSlot,
       });
 
       const { showToast } = useToastStore.getState();

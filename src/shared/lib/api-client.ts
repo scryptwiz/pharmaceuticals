@@ -32,7 +32,6 @@ export class ApiClient {
     this.config.chaosFailureRate = rate;
   }
 
-  // Simulates a secure network fetch with retries, timeouts, and chaos options
   async request<T>(
     apiCall: () => Promise<T>,
     options: { timeout?: number; retries?: number } = {},
@@ -80,14 +79,12 @@ export class ApiClient {
     });
 
     const executionPromise = (async () => {
-      // 1. Inject Latency if Chaos Mode is enabled
       if (this.config.chaosMode) {
         const [min, max] = this.config.chaosLatencyRange;
         const delay = Math.floor(Math.random() * (max - min + 1)) + min;
         await new Promise((resolve) => setTimeout(resolve, delay));
       }
 
-      // 2. Inject Random Failures (500/502 status errors) if Chaos Mode is enabled
       if (
         this.config.chaosMode &&
         Math.random() < this.config.chaosFailureRate
@@ -98,22 +95,17 @@ export class ApiClient {
         throw new Error(`HTTP Error Status: ${status}`);
       }
 
-      // 3. Execute the actual underlying mock query
       const data = await apiCall();
 
-      // 4. Inject Malformed JSON Payload if Chaos Mode is enabled
       if (
         this.config.chaosMode &&
         Math.random() < this.config.chaosFailureRate
       ) {
         Logger.warn("Chaos Mode: Injecting malformed/corrupt JSON response");
-        // Simulate malformed JSON by returning broken data
         if (typeof data === "object" && data !== null) {
           if (Array.isArray(data)) {
-            // Cut list or return array with partial elements
             return data.slice(0, Math.floor(data.length / 2)) as any;
           } else {
-            // Delete half the keys to simulate partial JSON corruptions
             const keys = Object.keys(data);
             const corruptData = { ...data } as any;
             keys.slice(0, Math.floor(keys.length / 2)).forEach((k) => {

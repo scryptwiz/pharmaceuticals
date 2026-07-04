@@ -11,7 +11,14 @@ interface DoctorCardProps {
 
 export default function DoctorCard({ doctor, onPress }: DoctorCardProps) {
   return (
-    <Pressable style={styles.card} onPress={onPress}>
+    <Pressable
+      accessible={true}
+      accessibilityRole="button"
+      accessibilityLabel={`${doctor.name}, ${doctor.specialty}. Rating: ${doctor.rating} stars. Experience: ${doctor.experience} years.`}
+      accessibilityHint="Double tap to view profile details and book slots"
+      style={styles.card}
+      onPress={onPress}
+    >
       <View style={styles.avatar}>
         <Ionicons name="person" size={32} color={Colors.primary} />
       </View>

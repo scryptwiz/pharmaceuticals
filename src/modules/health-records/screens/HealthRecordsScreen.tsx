@@ -50,7 +50,7 @@ export default function HealthRecordsScreen() {
 
   const activeType = params.type || "All";
 
-  // Memoize grouped records prevent recalculation on every render
+  // Avoid regrouping on every render
   const sections = useMemo(() => {
     return groupRecordsByMonthYear(records);
   }, [records]);
@@ -77,7 +77,12 @@ export default function HealthRecordsScreen() {
     }
 
     return (
-      <View style={styles.recordCard}>
+      <View
+        accessible={true}
+        accessibilityRole="none"
+        accessibilityLabel={`${item.type}: ${item.title}. Date: ${item.date}. Facility: ${item.facility}. Patient: ${item.patientName}. Notes: ${item.notes}`}
+        style={styles.recordCard}
+      >
         <View style={styles.timelineCol}>
           <View
             style={[

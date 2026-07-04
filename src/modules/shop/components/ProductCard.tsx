@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../../shared/design-system/theme";
+import { Analytics } from "../../../shared/lib/analytics";
 import { Product } from "../api/useProducts";
 import { useShopStore } from "../store/useShopStore";
 
@@ -22,6 +23,11 @@ export default function ProductCard({ product }: ProductCardProps) {
   const handleAddToCart = () => {
     if (product.stock > 0) {
       addToCart(product);
+      Analytics.track("product_added_to_cart", {
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+      });
     }
   };
 
@@ -31,7 +37,18 @@ export default function ProductCard({ product }: ProductCardProps) {
     <View style={styles.card}>
       <View style={styles.imagePlaceholder}>
         <Ionicons name="leaf-outline" size={40} color={Colors.primary} />
-        <Pressable style={styles.wishlistButton} onPress={handleToggleWishlist}>
+        <Pressable
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel={
+            isWishlisted
+              ? `Remove ${product.name} from wishlist`
+              : `Add ${product.name} to wishlist`
+          }
+          accessibilityHint="Toggles this item in your saved wishlist"
+          style={styles.wishlistButton}
+          onPress={handleToggleWishlist}
+        >
           <Ionicons
             name={isWishlisted ? "heart" : "heart-outline"}
             size={22}
@@ -69,6 +86,18 @@ export default function ProductCard({ product }: ProductCardProps) {
         </View>
 
         <Pressable
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel={
+            isOutOfStock
+              ? `${product.name} is out of stock`
+              : quantity > 0
+                ? `Add another ${product.name}. Currently ${quantity} in cart.`
+                : `Add ${product.name} to cart`
+          }
+          accessibilityHint={
+            isOutOfStock ? "" : `Price ₹${product.price}. Double tap to add.`
+          }
           style={[styles.addButton, isOutOfStock && styles.disabledButton]}
           onPress={handleAddToCart}
           disabled={isOutOfStock}

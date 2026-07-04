@@ -27,8 +27,12 @@ if (process.env.NODE_ENV === "test") {
   mmkvInstance = new MockMMKV();
 } else {
   const { createMMKV } = require("react-native-mmkv");
+
+  const SECURE_STORAGE_KEY = "amrutam-app-secure-local-persistence-key";
+
   mmkvInstance = createMMKV({
     id: "pharmaceuticals-app-storage",
+    encryptionKey: SECURE_STORAGE_KEY,
   });
 }
 
@@ -51,7 +55,8 @@ export const StorageHelpers = {
     if (!raw) return null;
     try {
       return JSON.parse(raw) as T;
-    } catch {
+    } catch (e) {
+      console.warn(`[StorageHelpers] Failed to parse key "${key}":`, e);
       return null;
     }
   },

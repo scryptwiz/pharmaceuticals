@@ -94,6 +94,10 @@ export default function FilterSection({
             return (
               <Pressable
                 key={opt.value}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityState={{ selected: isSelected }}
+                accessibilityLabel={`Sort by ${opt.label}`}
                 style={[styles.sortChip, isSelected && styles.sortChipSelected]}
                 onPress={() => handleSortSelect(opt.value)}
               >

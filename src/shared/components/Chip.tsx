@@ -26,6 +26,11 @@ export default function Chip({
 }: ChipProps) {
   return (
     <Pressable
+      accessible={true}
+      accessibilityRole="button"
+      accessibilityState={{ selected }}
+      accessibilityLabel={`${label} filter`}
+      accessibilityHint={selected ? "Already selected" : `Select ${label} filter`}
       style={[styles.chip, selected && styles.chipSelected, style]}
       onPress={onPress}
     >

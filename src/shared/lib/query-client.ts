@@ -3,7 +3,7 @@ import NetInfo from "@react-native-community/netinfo";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import { onlineManager, QueryClient } from "@tanstack/react-query";
 
-// NetInfo online manager for auto refreshes when internet restored
+// Auto refetch on network reconnect
 onlineManager.setEventListener((setOnline) => {
   return NetInfo.addEventListener((state) => {
     setOnline(!!state.isConnected);

@@ -24,7 +24,12 @@ export default function SearchInput({
   style,
 }: SearchInputProps) {
   return (
-    <View style={[styles.searchRow, style]}>
+    <View
+      accessible={true}
+      accessibilityRole="search"
+      accessibilityLabel="Search area"
+      style={[styles.searchRow, style]}
+    >
       <Ionicons
         name="search"
         size={20}
@@ -37,9 +42,18 @@ export default function SearchInput({
         value={value}
         onChangeText={onChangeText}
         placeholderTextColor={Colors.inactive}
+        accessibilityLabel="Search input field"
+        accessibilityHint="Type here to filter items"
       />
       {value ? (
-        <Pressable onPress={() => onChangeText("")} style={styles.clearButton}>
+        <Pressable
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel="Clear search"
+          accessibilityHint="Clears current query"
+          onPress={() => onChangeText("")}
+          style={styles.clearButton}
+        >
           <Ionicons name="close-circle" size={18} color={Colors.inactive} />
         </Pressable>
       ) : null}

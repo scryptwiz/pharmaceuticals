@@ -37,11 +37,13 @@ export const useShopStore = create<ShopState>()(
       cart: [],
       wishlist: [],
       addToCart: (product) => {
+        if (product.stock <= 0) return;
         set((state) => {
           const existing = state.cart.find(
             (item) => item.product.id === product.id,
           );
           if (existing) {
+            if (existing.quantity >= product.stock) return state;
             return {
               cart: state.cart.map((item) =>
                 item.product.id === product.id
