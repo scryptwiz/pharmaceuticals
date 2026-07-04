@@ -7,11 +7,11 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Chip from "../../../shared/components/Chip";
+import SearchInput from "../../../shared/components/SearchInput";
 import { Colors } from "../../../shared/design-system/theme";
 import { FetchDoctorsParams, useDoctors } from "../api/useDoctors";
 import DoctorCard from "../components/DoctorCard";
@@ -53,29 +53,12 @@ export default function ConsultationsScreen({ navigation }: any) {
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
-      <View style={styles.searchRow}>
-        <Ionicons
-          name="search"
-          size={20}
-          color={Colors.inactive}
-          style={styles.searchIcon}
-        />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search 5,000+ doctors..."
-          value={params.query || ""}
-          onChangeText={handleSearch}
-          placeholderTextColor={Colors.inactive}
-        />
-        {params.query ? (
-          <Pressable
-            onPress={() => handleSearch("")}
-            style={styles.clearButton}
-          >
-            <Ionicons name="close-circle" size={18} color={Colors.inactive} />
-          </Pressable>
-        ) : null}
-      </View>
+      <SearchInput
+        value={params.query || ""}
+        onChangeText={handleSearch}
+        placeholder="Search 5,000+ doctors..."
+        style={styles.searchBar}
+      />
 
       <View style={styles.specialtySection}>
         <ScrollView
@@ -147,26 +130,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
-  searchRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: Colors.surface,
-    borderRadius: 8,
+  searchBar: {
     marginHorizontal: 16,
     marginTop: 16,
-    paddingHorizontal: 12,
-  },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    flex: 1,
-    height: 40,
-    fontSize: 14,
-    color: Colors.text,
-  },
-  clearButton: {
-    padding: 4,
   },
   specialtySection: {
     marginVertical: 12,

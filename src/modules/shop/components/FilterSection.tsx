@@ -1,14 +1,7 @@
-import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import Chip from "../../../shared/components/Chip";
+import SearchInput from "../../../shared/components/SearchInput";
 import { Colors } from "../../../shared/design-system/theme";
 import { FetchProductsParams } from "../api/useProducts";
 
@@ -61,29 +54,12 @@ export default function FilterSection({
 
   return (
     <View style={styles.container}>
-      <View style={styles.searchRow}>
-        <Ionicons
-          name="search"
-          size={20}
-          color={Colors.inactive}
-          style={styles.searchIcon}
-        />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search 20,000+ products..."
-          value={params.query || ""}
-          onChangeText={handleSearch}
-          placeholderTextColor={Colors.inactive}
-        />
-        {params.query ? (
-          <Pressable
-            onPress={() => handleSearch("")}
-            style={styles.clearButton}
-          >
-            <Ionicons name="close-circle" size={18} color={Colors.inactive} />
-          </Pressable>
-        ) : null}
-      </View>
+      <SearchInput
+        value={params.query || ""}
+        onChangeText={handleSearch}
+        placeholder="Search 20,000+ products..."
+        style={styles.searchBar}
+      />
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Categories</Text>
@@ -145,26 +121,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
-  searchRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: Colors.surface,
-    borderRadius: 8,
+  searchBar: {
     marginHorizontal: 16,
     marginTop: 12,
-    paddingHorizontal: 12,
-  },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    flex: 1,
-    height: 40,
-    fontSize: 14,
-    color: Colors.text,
-  },
-  clearButton: {
-    padding: 4,
   },
   section: {
     marginTop: 12,
