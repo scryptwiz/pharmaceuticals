@@ -9,4 +9,9 @@ export const Colors = {
   error: "#b91c1c",
   errorBackground: "#fee2e2",
   errorBorder: "#fca5a5",
+  accent: "#e11d48",
+  success: "#16a34a",
+  warning: "#ea580c",
+  star: "#f59e0b",
+  disabled: "#cbd5e1",
 };

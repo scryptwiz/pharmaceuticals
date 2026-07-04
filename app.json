@@ -9,7 +9,9 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kelvin.pharmaceuticals",
+      "appleTeamId": "QLU8U78UTP"
     },
     "android": {
       "adaptiveIcon": {

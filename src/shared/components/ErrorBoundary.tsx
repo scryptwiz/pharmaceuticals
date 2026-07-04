@@ -1,8 +1,8 @@
 import React, { Component, ErrorInfo, ReactNode } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Logger } from "../lib/logger";
 import { Colors } from "../design-system/theme";
+import { Logger } from "../lib/logger";
 
 interface Props {
   children: ReactNode;
@@ -52,9 +52,9 @@ export class ErrorBoundary extends Component<Props, State> {
                 </Text>
               </View>
             )}
-            <TouchableOpacity style={styles.button} onPress={this.handleReset}>
+            <Pressable style={styles.button} onPress={this.handleReset}>
               <Text style={styles.buttonText}>Try Again</Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </SafeAreaView>
       );
