@@ -84,12 +84,7 @@ export default function App() {
             <Tab.Screen
               name="Health Records"
               component={HealthRecordsScreen}
-              options={{
-                headerShown: true,
-                headerStyle: { backgroundColor: Colors.primary },
-                headerTintColor: Colors.textLight,
-                headerTitleStyle: { fontWeight: "bold" },
-              }}
+              options={{ title: "Health Records" }}
             />
           </Tab.Navigator>
         </NavigationContainer>
